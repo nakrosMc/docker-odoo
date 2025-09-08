@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="hr_leave_menu_report_by_motive" name="Análisis por Motivo" parent="hr_holidays.menu_hr_holidays_report" action="hr_leave_action_report_by_motive" sequence="30"/>
+    <menuitem id="hr_leave_motive_menu" name="Motivos de Ausencia" parent="hr_holidays.menu_hr_holidays_configuration" action="hr_leave_motive_action" sequence="100"/>
+</odoo>

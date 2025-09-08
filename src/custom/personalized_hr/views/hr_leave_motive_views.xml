@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_leave_motive_view_tree" model="ir.ui.view">
+        <field name="name">hr.leave.motive.tree</field>
+        <field name="model">hr.leave.motive</field>
+        <field name="arch" type="xml">
+            <tree string="Motivos de Ausencia">
+                <field name="name"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_leave_motive_action" model="ir.actions.act_window">
+        <field name="name">Motivos de Ausencia</field>
+        <field name="res_model">hr.leave.motive</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
