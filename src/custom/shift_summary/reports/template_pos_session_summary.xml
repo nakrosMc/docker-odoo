@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_session_summary_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="session">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h2>Resumen de Turno del Cajero</h2>
+                        
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>Sesión:</strong>
+                                <p><span t-field="session.name"/></p>
+                            </div>
+                            <div class="col-6">
+                                <strong>Cajero:</strong>
+                                <p><span t-field="session.user_id.name"/></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Fecha de Cierre:</strong>
+                                <p><span t-field="session.stop_at" t-options='{"widget": "datetime"}'/></p>
+                            </div>
+                            <div class="col-6">
+                                <strong>Tiempo Activo:</strong>
+                                <p><span t-field="session.summary_active_time"/></p>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h3><strong>Total de Ventas: <span t-field="session.summary_total_sales"/></strong></h3>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                             <div class="col-12">
+                                <h4>Top 5 Productos Vendidos</h4>
+                                <p style="white-space: pre-wrap; font-size: 1.1em;"><span t-field="session.summary_top_products"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

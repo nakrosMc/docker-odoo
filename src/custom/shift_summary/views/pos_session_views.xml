@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_session_view_form_summary" model="ir.ui.view">
+        <field name="name">pos.session.form.summary</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="%(shift_summary.action_report_pos_session_summary)d" string="Imprimir Resumen" type="action" class="oe_highlight"/>
+                </header>
+            </xpath>
+            <xpath expr="//sheet/group[last()]" position="after">
+                <group string="Resumen de Turno" name="summary_group">
+                    <field name="summary_total_sales" widget="monetary"/>
+                    <field name="summary_active_time"/>
+                    <field name="summary_top_products" widget="preformatted" colspan="2"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
