@@ -14,12 +14,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
-    # para que funcione la solución *.localhost
-    # network_mode: "host"
     ports:
       - "${TRAEFIK_HOST_PORT}:${TRAEFIK_SERVICE_CONTAINER_PORT}"
     networks:
       - binaural
+
   db:
     image: postgres:${POSTGRES_IMG_VERSION}
     container_name: ${PROJECT_NAME}_db
@@ -32,6 +31,7 @@ services:
       - odoo-db:/var/lib/postgresql/data/pgdata
     networks:
       - binaural
+
   pgadmin:
     container_name: ${PROJECT_NAME}_pgadmin_container
     image: dpage/pgadmin4
@@ -45,6 +45,7 @@ services:
       - odoo-pgadmin:/root/.pgadmin
     networks:
       - binaural
+
   dns:
     image: cytopia/bind:alpine-0.30
     environment:
@@ -53,6 +54,7 @@ services:
     networks:
       binaural:
         ipv4_address: 172.20.${ODOO_MINOR}.10
+
   odoo:
     container_name: ${PROJECT_NAME}
     build:
@@ -67,31 +69,19 @@ services:
     volumes:
       - odoo-web:/var/lib/odoo
       - ./src:/home/odoo/src
+      - ./src/custom:/mnt/extra-addons
       - ./.resources/.coveragerc:/home/odoo/.coveragerc
       - odoo_data:/home/odoo/data
       - py3:/usr/local/lib/
       - py:/usr/lib/
-    command: odoo --dev=all
-    labels:
-      - traefik.enable=true
-      - traefik.frontend.port=8069
-      - traefik.frontend.rule=HostRegexp:$DOMAIN,{subdomain:[a-z0-9-_]+}.$DOMAIN
-      # - traefik.frontend.priority=10
-      # - traefik.longpolling.port=8072
-      # - traefik.longpolling.frontend.rule=HostRegexp:$DOMAIN,{subdomain:[a-z0-9-_]+}.$DOMAIN;PathPrefix:/longpolling/
-      - traefik.backend.loadbalancer.stickiness=true
-      - traefik.backend.loadbalancer.method=drr
-      # traefik.frontend.redirect.regex: $strTraefikRedirectRegex
-      # traefik.frontend.redirect.replacement: $strTraefikRedirectReplacement
+    command: odoo --addons-path=/mnt/extra-addons --dev=all
     environment:
       CUSTOM_CONFIG: |-
         [options]
-      CUSTOM_REQUIREMTNS: |-
-        # custom pip librearies
+      CUSTOM_REQUIREMENTS: |-
+        # custom pip libraries
       CUSTOM_ENTRYPOINT: |-
         #!/bin/bash
-        # pip install --user --no-cache-dir -e /home/odoo/custom/odoo
-        # pip install --user --no-cache-dir pyopenssl
       SMTP_SERVER: mailhog
       SMTP_PORT: 1025
       DBFILTER: ${DBFILTER}
@@ -108,10 +98,8 @@ services:
       LIMIT_TIME_REAL: ${LIMIT_TIME_REAL}
       UNACCENT: ${UNACCENT}
       LOG_LEVEL: info
-    dns:
-      - 172.20.${ODOO_MINOR}.10
     networks:
-      binaural:
+      - binaural
 
 volumes:
   odoo-web:
@@ -129,3 +117,4 @@ networks:
     ipam:
       config:
         - subnet: 172.20.${ODOO_MINOR}.0/24
+
