@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_view_form_inherit_suggest_packages" model="ir.ui.view">
+        <field name="name">stock.picking.view.form.inherit.suggest.packages</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <header>
+                <button name="action_suggest_packages" string="Sugerir Paquetes" type="object" class="oe_highlight" 
+                        invisible="state not in ('assigned')"/>
+            </header>
+        </field>
+    </record>
+</odoo>
